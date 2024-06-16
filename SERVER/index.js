@@ -11,6 +11,13 @@ const db = {
   'blog.piyushgarg.dev': {
     type:'CNAME',
     data:'hashnode.network'
+  },'paras.com': {
+    type: 'CNAME',
+    data: 'pallavi.com',
+  },
+  'pallavi.com': {
+    type: 'A',
+    data: '1.2.3.4',
   }
 };
 
@@ -23,6 +30,8 @@ server.on('error', (err) => {
 server.on('message', (msg, rinfo) => {
   try {
     const incomingMessage = dnsPacket.decode(msg);
+
+    console.log(incomingMessage.questions[0]);
 
     const queryName = incomingMessage.questions[0].name;
     const ipFromDb = db[queryName];

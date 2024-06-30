@@ -1,46 +1,27 @@
-// App.js
 import React, { useState, useEffect } from 'react';
 import RecordComponent from '../../components/RecordComponent/RecordComponent';
 import AddRecordModal from '../../components/AddRecordModal/AddRecordModal';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchRecords, addRecord } from '../../redux/slices/recordSlice';
 import './Landing.css';
 
+
 const Landing = () => {
-  const [records, setRecords] = useState([]);
   const [showModal, setShowModal] = useState(false);
 
+  const dispatch = useDispatch();
+  const records = useSelector((state) => state.record.records);
+  const loading = useSelector((state) => state.record.loading);
+  const error = useSelector((state) => state.record.error);
+
   useEffect(() => {
-    fetchRecords();
-  }, []);
+    dispatch(fetchRecords());
+  }, [dispatch]);
 
-  const fetchRecords = async () => {
-    try {
-      const response = await fetch('YOUR_BACKEND_API_ENDPOINT');
-      const data = await response.json();
-      setRecords(data);
-    } catch (error) {
-      console.error('Error fetching records:', error);
-    }
+  const handleAddRecord = (newRecord) => {
+    dispatch(addRecord(newRecord));
   };
-
-  const handleAddRecord = async (newRecord) => {
-    try {
-      const response = await fetch('YOUR_BACKEND_API_ENDPOINT', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newRecord),
-      });
-      if (response.ok) {
-        fetchRecords();
-        setShowModal(false);
-      } else {
-        console.error('Error adding record:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Error adding record:', error);
-    }
-  };
+  
 
   return (
     <div>

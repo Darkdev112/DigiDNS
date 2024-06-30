@@ -4,8 +4,6 @@ const createRecord=async(req,res)=>{
     const { hostname, type, ttl, data } = req.body;
     const email = req.auth.email;
 
-    // console.log(req.auth);
-
     try {
         const newRecord = new Record({ hostname, type, ttl, data, email });
         await newRecord.save();

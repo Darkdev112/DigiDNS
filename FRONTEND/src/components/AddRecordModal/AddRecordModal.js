@@ -1,4 +1,3 @@
-// AddRecordModal.js
 import React, { useState } from 'react';
 import './AddRecordModal.css';
 

@@ -1,6 +1,25 @@
 .record {
-    border: 1px solid #ddd;
-    padding: 10px;
-    margin-bottom: 10px;
-  }
-  
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.record p {
+  margin: 5px 0;
+}
+
+.record button {
+  margin: 5px 0;
+  padding: 5px 10px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.record button:hover {
+  background-color: #0056b3;
+}

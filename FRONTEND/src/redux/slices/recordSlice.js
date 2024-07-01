@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 export const fetchRecords = createAsyncThunk('record/fetchRecords', async () => {
-  const response = await fetch('http://localhost:5000/getAllRecord', {
+  const response = await fetch('http://localhost:2000/getAllRecord', {
     headers: {
       'Authorization': `Bearer ${localStorage.getItem('token')}`,
     },
@@ -20,6 +20,35 @@ export const addRecord = createAsyncThunk('record/addRecord', async (data) => {
   });
   return response.json();
 });
+
+export const editRecord = createAsyncThunk('record/editRecord', async (data) => {
+  const token = localStorage.getItem('token');
+  const response = await fetch(`http://localhost:2000/updateRecord`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+  return response.json();
+});
+
+
+export const deleteRecord = createAsyncThunk('record/deleteRecord', async (id) => {
+  console.log("idzz",id);
+  const token = localStorage.getItem('token');
+  const response = await fetch(`http://localhost:2000/deleteRecord`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify({id}),
+  });
+  return response.json(id);
+});
+
 
 const recordSlice = createSlice({
   name: 'record',
@@ -42,6 +71,8 @@ const recordSlice = createSlice({
         state.loading = false;
         state.error = action.error.message;
       })
+
+
       .addCase(addRecord.pending, (state) => {
         state.loading = true;
       })
@@ -52,7 +83,40 @@ const recordSlice = createSlice({
       .addCase(addRecord.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+      
+      
+      .addCase(editRecord.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(editRecord.fulfilled, (state, action) => {
+        state.loading = false;
+        const index = state.records.findIndex(record => record._id === action.payload._id);
+        console.log("index",index);
+        if (index !== -1) {
+          state.records[index] = action.payload;
+        }
+      })
+      .addCase(editRecord.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+
+
+
+      .addCase(deleteRecord.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteRecord.fulfilled, (state, action) => {
+        state.loading = false;
+        state.records = state.records.filter(record => record._id !== action.meta.arg);
+      })
+      .addCase(deleteRecord.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       });
+
+      
   },
 });
 

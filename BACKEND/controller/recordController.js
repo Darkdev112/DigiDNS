@@ -14,8 +14,8 @@ const createRecord=async(req,res)=>{
 }
 
 const deleteRecord=async(req,res)=>{
-    const recordId= req.body._id;
-    // const email = req.user.email;
+    console.log("BodyReq",req.body);
+    const recordId= req.body.id;
 
     try {
         const record = await Record.findOneAndDelete({ _id: recordId});

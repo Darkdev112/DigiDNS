@@ -3,8 +3,9 @@ import RecordComponent from '../../components/RecordComponent/RecordComponent';
 import AddRecordModal from '../../components/AddRecordModal/AddRecordModal';
 import EditRecordModal from '../../components/EditRecordModal/EditRecordModal';
 import DeleteConfirmModal from '../../components/DeleteConfirmModal/DeleteConfirmModal';
+import SearchComponent from '../../components/SearchComponent/SearchComponent';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchRecords, addRecord, editRecord, deleteRecord } from '../../redux/slices/recordSlice';
+import { fetchRecords, addRecord, editRecord, deleteRecord,searchRecords} from '../../redux/slices/recordSlice';
 import './Landing.css';
 
 
@@ -21,7 +22,7 @@ const Landing = () => {
 
   useEffect(() => {
     dispatch(fetchRecords());
-  }, []);
+  }, [dispatch]);
 
   const handleAddRecord = (newRecord) => {
     dispatch(addRecord(newRecord));
@@ -46,12 +47,18 @@ const Landing = () => {
     setSelectedRecord(id);
     setShowDeleteModal(true);
   };
+
+
+  const handleSearch = (hostname) => {
+    dispatch(searchRecords(hostname));
+  };
   
 
   return (
     <div>
       <div className="container">
         <h1>Your DNS Records</h1>
+        <SearchComponent onSearch={handleSearch} />
         <button onClick={() => setShowAddModal(true)}>Add Record</button>
         {loading && <p>Loading...</p>}
         {error && <p>Error: {error}</p>}

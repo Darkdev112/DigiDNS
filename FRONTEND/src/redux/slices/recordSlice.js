@@ -50,6 +50,17 @@ export const deleteRecord = createAsyncThunk('record/deleteRecord', async (id) =
 });
 
 
+export const searchRecords = createAsyncThunk('record/searchRecords', async (hostname) => {
+  const token = localStorage.getItem('token');
+  const response = await fetch(`http://localhost:2000/searchRecords?hostname=${hostname}`, {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+  return response.json();
+});
+
+
 const recordSlice = createSlice({
   name: 'record',
   initialState: {
@@ -112,6 +123,20 @@ const recordSlice = createSlice({
         state.records = state.records.filter(record => record._id !== action.meta.arg);
       })
       .addCase(deleteRecord.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+
+
+
+      .addCase(searchRecords.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(searchRecords.fulfilled, (state, action) => {
+        state.loading = false;
+        state.records = action.payload;
+      })
+      .addCase(searchRecords.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });

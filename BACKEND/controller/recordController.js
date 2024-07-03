@@ -70,6 +70,18 @@ const getRecord=async(req,res)=>{
     }
 }
 
+const searchRecord=async(req, res) => {
+    const hostname = req.query.hostname;
+  
+    try {
+      const records = await Record.find({ hostname: new RegExp(hostname, 'i') });
+      res.status(200).json(records);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+};
+  
+
 
 module.exports={
     createRecord,
@@ -77,5 +89,6 @@ module.exports={
     updateRecord,
     getAllRecord,
     getRecord,
+    searchRecord,
 }
 

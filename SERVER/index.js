@@ -19,7 +19,7 @@ server.on('message', async (msg, rinfo) => {
     const queryName = incomingMessage.questions[0].name;
 
     try {
-      const response = await axios.get('http://localhost:2000/dnsQuery', {
+      const response = await axios.get('http://localhost:5000/dnsQuery', {
         params: { hostname: queryName }
       });
 
@@ -63,5 +63,7 @@ server.on('listening', () => {
   const address = server.address();
   console.log(`DNS Server is running on port 53`);
 });
+
+console.log("server is up and running");
 
 server.bind(53);

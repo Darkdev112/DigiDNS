@@ -1,6 +1,8 @@
 const jwt=require('jsonwebtoken')
 const {StatusCodes} = require('http-status-codes');
 
+const JWT_SECRET = "DNSserver";
+
 const authentication = async (req, res , next) => {
     const authHeader = req.headers.authorization
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -13,7 +15,7 @@ const authentication = async (req, res , next) => {
     const token = authHeader.split(' ')[1]
   
     try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET)
+      const decoded = jwt.verify(token, JWT_SECRET)
       const {email,username}=decoded;
       req.auth={email,username};
       next();

@@ -13,8 +13,10 @@ COPY SERVER/ ./server/
 
 RUN npm install -g pm2
 
-# CMD ["pm2-runtime", "start", "--name", "backend", "backend/app.js", "--name", "server", "server/index.js"]
-CMD [ "node", "server/index.js" ]
+COPY start.sh /usr/src/app/start.sh
+RUN chmod +x /usr/src/app/start.sh
+
+CMD ["/usr/src/app/start.sh"]
 
 EXPOSE 5000 53/udp
 EXPOSE 53/tcp

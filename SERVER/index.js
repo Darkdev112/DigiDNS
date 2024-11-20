@@ -47,7 +47,7 @@ server.on('message', async (msg, rinfo) => {
       }
 
     } catch (error) {
-      console.error('Error fetching DNS record:', error);
+      console.error('Error fetching DNS record');
     }
 
   } catch (error) {
